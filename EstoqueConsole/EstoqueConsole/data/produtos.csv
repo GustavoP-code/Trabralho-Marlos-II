@@ -1,4 +1,3 @@
-id;nome;categoria;estoqueMinimo;saldo
-1;Notebook;Eletrônicos;5;10
-2;Mouse;Eletrônicos;10;25
+﻿id;nome;categoria;estoqueMinimo;saldo
+1;Notebook;Eletrônicos;5;4
 3;Cadeira;Móveis;2;3

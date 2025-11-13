@@ -32,9 +32,13 @@ namespace EstoqueConsole.Servico
             return _produtos;
         }
 
+        public Produto BuscarProdutoPorId(int id)
+        {
+            return _produtos.FirstOrDefault(p => p.Id == id);
+        }
+
         public void CadastrarProduto(string nome, string categoria, int estoqueMinimo, int saldoInicial = 0)
         {
-            // Validações
             if (string.IsNullOrWhiteSpace(nome))
             {
                 throw new ArgumentException("O nome do produto é obrigatório.");
@@ -61,6 +65,98 @@ namespace EstoqueConsole.Servico
 
             _produtos.Add(novoProduto);
             SalvarDados();
+        }
+
+        public bool EditarProduto(int id, string novoNome, string novaCategoria, int novoEstoqueMinimo, int novoSaldo)
+        {
+            var produto = BuscarProdutoPorId(id);
+            if (produto == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(novoNome))
+            {
+                throw new ArgumentException("O nome do produto é obrigatório.");
+            }
+
+            if (novoEstoqueMinimo < 0)
+            {
+                throw new ArgumentException("O estoque mínimo não pode ser negativo.");
+            }
+
+            if (novoSaldo < 0)
+            {
+                throw new ArgumentException("O saldo não pode ser negativo.");
+            }
+
+            produto.Nome = novoNome.Trim();
+            produto.Categoria = novaCategoria.Trim();
+            produto.EstoqueMinimo = novoEstoqueMinimo;
+            produto.Saldo = novoSaldo;
+
+            SalvarDados();
+            return true;
+        }
+
+        public bool ExcluirProduto(int id)
+        {
+            var produto = BuscarProdutoPorId(id);
+            if (produto == null)
+            {
+                return false;
+            }
+
+            _produtos.Remove(produto);
+            SalvarDados();
+            return true;
+        }
+
+        public bool EntradaEstoque(int id, int quantidade)
+        {
+            var produto = BuscarProdutoPorId(id);
+            if (produto == null)
+            {
+                return false;
+            }
+
+            if (quantidade <= 0)
+            {
+                throw new ArgumentException("A quantidade de entrada deve ser maior que zero.");
+            }
+
+            produto.Saldo += quantidade;
+            SalvarDados();
+            return true;
+        }
+
+        public bool SaidaEstoque(int id, int quantidade)
+        {
+            var produto = BuscarProdutoPorId(id);
+            if (produto == null)
+            {
+                return false;
+            }
+
+            if (quantidade <= 0)
+            {
+                throw new ArgumentException("A quantidade de saída deve ser maior que zero.");
+            }
+
+            if (produto.Saldo < quantidade)
+            {
+                throw new InvalidOperationException(
+                    $"Saldo insuficiente! Saldo atual: {produto.Saldo}, tentou retirar: {quantidade}");
+            }
+
+            produto.Saldo -= quantidade;
+            SalvarDados();
+            return true;
+        }
+
+        public List<Produto> ListarProdutosAbaixoMinimo()
+        {
+            return _produtos.Where(p => p.Saldo < p.EstoqueMinimo).ToList();
         }
 
         public void ListarProdutosConsole()

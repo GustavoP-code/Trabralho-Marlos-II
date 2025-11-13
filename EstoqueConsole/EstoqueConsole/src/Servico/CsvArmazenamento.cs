@@ -8,24 +8,34 @@ namespace EstoqueConsole.Servico
 {
     public static class CsvArmazenamento
     {
-        private static readonly string CaminhoProdutos = Path.Combine("data", "produtos.csv");
+        private static readonly string CaminhoProdutos = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "..", "..", "..", "data", "produtos.csv"
+        );
 
+        private static readonly string CaminhoMovimentos = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "..", "..", "..", "data", "movimentos.csv"
+        );
+
+        // Métodos para Produtos (já existentes)
         public static List<Produto> CarregarProdutos()
         {
             var produtos = new List<Produto>();
 
             try
             {
-                if (!File.Exists(CaminhoProdutos))
+                string caminhoAbsoluto = Path.GetFullPath(CaminhoProdutos);
+
+                if (!File.Exists(caminhoAbsoluto))
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(CaminhoProdutos));
-                    File.WriteAllText(CaminhoProdutos, "id;nome;categoria;estoqueMinimo;saldo\n");
+                    Directory.CreateDirectory(Path.GetDirectoryName(caminhoAbsoluto));
+                    File.WriteAllText(caminhoAbsoluto, "id;nome;categoria;estoqueMinimo;saldo\n");
                     return produtos;
                 }
 
-                var linhas = File.ReadAllLines(CaminhoProdutos, System.Text.Encoding.UTF8);
+                var linhas = File.ReadAllLines(caminhoAbsoluto, System.Text.Encoding.UTF8);
 
-                // Pula o cabeçalho (primeira linha)
                 for (int i = 1; i < linhas.Length; i++)
                 {
                     var linha = linhas[i].Trim();
@@ -71,37 +81,18 @@ namespace EstoqueConsole.Servico
             return produtos;
         }
 
-        public static void ListarProdutos()
-        {
-            var produtos = CarregarProdutos();
-
-            if (produtos.Count == 0)
-            {
-                Console.WriteLine("\nNenhum produto cadastrado.");
-                return;
-            }
-
-            Console.WriteLine("\n=== LISTA DE PRODUTOS ===");
-            Console.WriteLine("ID | Nome | Categoria | Estoque Mínimo | Saldo");
-            Console.WriteLine(new string('-', 60));
-
-            foreach (var produto in produtos)
-            {
-                Console.WriteLine($"{produto.Id,-3} | {produto.Nome,-15} | {produto.Categoria,-12} | {produto.EstoqueMinimo,-14} | {produto.Saldo,-5}");
-            }
-        }
-
         public static void SalvarProdutos(List<Produto> produtos)
         {
             try
             {
-                // Garante que o diretório existe
-                Directory.CreateDirectory(Path.GetDirectoryName(CaminhoProdutos));
+                string caminhoAbsoluto = Path.GetFullPath(CaminhoProdutos);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(caminhoAbsoluto));
 
                 var linhas = new List<string>
-        {
-            "id;nome;categoria;estoqueMinimo;saldo" // Cabeçalho
-        };
+                {
+                    "id;nome;categoria;estoqueMinimo;saldo"
+                };
 
                 foreach (var produto in produtos.OrderBy(p => p.Id))
                 {
@@ -109,19 +100,110 @@ namespace EstoqueConsole.Servico
                     linhas.Add(linha);
                 }
 
-                // Escrita atômica (cria arquivo temporário e depois move)
-                var tempFile = Path.Combine(Path.GetDirectoryName(CaminhoProdutos), "produtos_temp.csv");
+                var tempFile = Path.Combine(Path.GetDirectoryName(caminhoAbsoluto), "produtos_temp.csv");
                 File.WriteAllLines(tempFile, linhas, System.Text.Encoding.UTF8);
 
-                // Substitui o arquivo original
-                File.Delete(CaminhoProdutos);
-                File.Move(tempFile, CaminhoProdutos);
-
-                Console.WriteLine($"\n✓ Produtos salvos com sucesso! Total: {produtos.Count} produtos");
+                File.Delete(caminhoAbsoluto);
+                File.Move(tempFile, caminhoAbsoluto);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\n✗ Erro ao salvar produtos: {ex.Message}");
+                Console.WriteLine($"Erro ao salvar produtos: {ex.Message}");
+            }
+        }
+
+        // Métodos para Movimentos
+        public static List<Movimento> CarregarMovimentos()
+        {
+            var movimentos = new List<Movimento>();
+
+            try
+            {
+                string caminhoAbsoluto = Path.GetFullPath(CaminhoMovimentos);
+
+                if (!File.Exists(caminhoAbsoluto))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(caminhoAbsoluto));
+                    File.WriteAllText(caminhoAbsoluto, "id;produtoId;tipo;quantidade;data;observacao\n");
+                    return movimentos;
+                }
+
+                var linhas = File.ReadAllLines(caminhoAbsoluto, System.Text.Encoding.UTF8);
+
+                for (int i = 1; i < linhas.Length; i++)
+                {
+                    var linha = linhas[i].Trim();
+
+                    if (string.IsNullOrWhiteSpace(linha) || linha.StartsWith("id;"))
+                        continue;
+
+                    var campos = linha.Split(';');
+
+                    for (int j = 0; j < campos.Length; j++)
+                    {
+                        campos[j] = campos[j].Trim();
+                    }
+
+                    if (campos.Length >= 6 &&
+                        !string.IsNullOrEmpty(campos[0]) &&
+                        int.TryParse(campos[0], out _))
+                    {
+                        try
+                        {
+                            var movimento = new Movimento
+                            {
+                                Id = int.Parse(campos[0]),
+                                ProdutoId = int.Parse(campos[1]),
+                                Tipo = campos[2],
+                                Quantidade = int.Parse(campos[3]),
+                                Data = DateTime.Parse(campos[4]),
+                                Observacao = campos[5]
+                            };
+                            movimentos.Add(movimento);
+                        }
+                        catch (FormatException)
+                        {
+                            // Ignora linhas com formato inválido
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao carregar movimentos: {ex.Message}");
+            }
+
+            return movimentos;
+        }
+
+        public static void SalvarMovimentos(List<Movimento> movimentos)
+        {
+            try
+            {
+                string caminhoAbsoluto = Path.GetFullPath(CaminhoMovimentos);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(caminhoAbsoluto));
+
+                var linhas = new List<string>
+                {
+                    "id;produtoId;tipo;quantidade;data;observacao"
+                };
+
+                foreach (var movimento in movimentos.OrderBy(m => m.Id))
+                {
+                    var linha = $"{movimento.Id};{movimento.ProdutoId};{movimento.Tipo};{movimento.Quantidade};{movimento.Data:yyyy-MM-dd HH:mm:ss};{movimento.Observacao}";
+                    linhas.Add(linha);
+                }
+
+                var tempFile = Path.Combine(Path.GetDirectoryName(caminhoAbsoluto), "movimentos_temp.csv");
+                File.WriteAllLines(tempFile, linhas, System.Text.Encoding.UTF8);
+
+                File.Delete(caminhoAbsoluto);
+                File.Move(tempFile, caminhoAbsoluto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao salvar movimentos: {ex.Message}");
             }
         }
     }

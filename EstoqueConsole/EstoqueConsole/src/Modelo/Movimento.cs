@@ -2,7 +2,7 @@
 
 namespace EstoqueConsole.Modelo
 {
-    public record struct Movimento
+    public class Movimento
     {
         public int Id { get; set; }
         public int ProdutoId { get; set; }
@@ -10,5 +10,17 @@ namespace EstoqueConsole.Modelo
         public int Quantidade { get; set; }
         public DateTime Data { get; set; }
         public string Observacao { get; set; }
+
+        public Movimento()
+        {
+            Tipo = string.Empty;
+            Observacao = string.Empty;
+            Data = DateTime.Now;
+        }
+
+        public override string ToString()
+        {
+            return $"{Data:dd/MM/yyyy HH:mm} | {Tipo,-7} | {Quantidade,3} unidades | {Observacao}";
+        }
     }
 }
