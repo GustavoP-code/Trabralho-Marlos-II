@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "c6EaUcyeCGg=",
+  "dgSpecHash": "Z1HfOjSbwOA=",
   "success": true,
-  "projectFilePath": "C:\\Trabalho\\EstoqueConsole\\EstoqueConsole\\EstoqueConsole.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\trabalho\\EstoqueConsole\\EstoqueConsole\\EstoqueConsole.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.22\\microsoft.windowsdesktop.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.22\\microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.22\\microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.22\\microsoft.netcore.app.host.win-x64.8.0.22.nupkg.sha512"
+  ],
   "logs": []
 }

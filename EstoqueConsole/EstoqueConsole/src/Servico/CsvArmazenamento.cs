@@ -18,7 +18,6 @@ namespace EstoqueConsole.Servico
             "..", "..", "..", "data", "movimentos.csv"
         );
 
-        // Métodos para Produtos (já existentes)
         public static List<Produto> CarregarProdutos()
         {
             var produtos = new List<Produto>();
@@ -112,7 +111,6 @@ namespace EstoqueConsole.Servico
             }
         }
 
-        // Métodos para Movimentos
         public static List<Movimento> CarregarMovimentos()
         {
             var movimentos = new List<Movimento>();
@@ -144,9 +142,7 @@ namespace EstoqueConsole.Servico
                         campos[j] = campos[j].Trim();
                     }
 
-                    if (campos.Length >= 6 &&
-                        !string.IsNullOrEmpty(campos[0]) &&
-                        int.TryParse(campos[0], out _))
+                    if (campos.Length >= 6)
                     {
                         try
                         {

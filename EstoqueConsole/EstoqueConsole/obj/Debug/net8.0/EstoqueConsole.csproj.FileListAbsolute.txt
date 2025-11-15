@@ -12,3 +12,17 @@ C:\Trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\refint\EstoqueConsole
 C:\Trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.pdb
 C:\Trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.genruntimeconfig.cache
 C:\Trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\ref\EstoqueConsole.dll
+D:\trabalho\EstoqueConsole\EstoqueConsole\bin\Debug\net8.0\EstoqueConsole.exe
+D:\trabalho\EstoqueConsole\EstoqueConsole\bin\Debug\net8.0\EstoqueConsole.deps.json
+D:\trabalho\EstoqueConsole\EstoqueConsole\bin\Debug\net8.0\EstoqueConsole.runtimeconfig.json
+D:\trabalho\EstoqueConsole\EstoqueConsole\bin\Debug\net8.0\EstoqueConsole.dll
+D:\trabalho\EstoqueConsole\EstoqueConsole\bin\Debug\net8.0\EstoqueConsole.pdb
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.GeneratedMSBuildEditorConfig.editorconfig
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.AssemblyInfoInputs.cache
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.AssemblyInfo.cs
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.csproj.CoreCompileInputs.cache
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.dll
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\refint\EstoqueConsole.dll
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.pdb
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\EstoqueConsole.genruntimeconfig.cache
+D:\trabalho\EstoqueConsole\EstoqueConsole\obj\Debug\net8.0\ref\EstoqueConsole.dll

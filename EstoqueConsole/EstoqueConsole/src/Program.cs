@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EstoqueConsole.Servico;
 
 namespace EstoqueConsole
@@ -40,17 +41,16 @@ namespace EstoqueConsole
                         RelatorioEstoqueAbaixoMinimo();
                         break;
                     case "8":
-                        Console.WriteLine("Extrato por produto - Em desenvolvimento...");
+                        ExtratoMovimentos();
                         break;
                     case "9":
-                        _inventoryService.SalvarDados();
-                        Console.WriteLine("Dados salvos com sucesso!");
+                        SalvarDados();
                         break;
                     case "0":
-                        Console.WriteLine("Saindo do sistema...");
+                        SairDoSistema();
                         return;
                     default:
-                        Console.WriteLine("Opção inválida! Trente novamente.");
+                        Console.WriteLine("Opção inválida! Tente novamente.");
                         break;
                 }
 
@@ -62,6 +62,11 @@ namespace EstoqueConsole
 
         static void ExibirMenu()
         {
+            if (_inventoryService.TemAlteracoesNaoSalvas())
+            {
+                Console.WriteLine("⚠️  AVISO: Há alterações não salvas! Use a opção 9 para salvar.");
+            }
+
             Console.WriteLine("\n=== MENU PRINCIPAL ===");
             Console.WriteLine("1. Listar produtos");
             Console.WriteLine("2. Cadastrar produto");
@@ -438,6 +443,53 @@ namespace EstoqueConsole
             {
                 Console.WriteLine($"\nErro ao gerar relatório: {ex.Message}");
             }
+        }
+
+        static void ExtratoMovimentos()
+        {
+            Console.WriteLine("\n=== EXTRATO DE MOVIMENTOS POR PRODUTO ===");
+
+            try
+            {
+                _inventoryService.ListarExtratoMovimentos();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nErro ao gerar extrato: {ex.Message}");
+            }
+        }
+
+        static void SalvarDados()
+        {
+            try
+            {
+                _inventoryService.SalvarTudo();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nErro ao salvar dados: {ex.Message}");
+            }
+        }
+
+        static void SairDoSistema()
+        {
+            if (_inventoryService.TemAlteracoesNaoSalvas())
+            {
+                Console.WriteLine("\n⚠️  AVISO: Você tem alterações não salvas!");
+                Console.Write("Deseja salvar antes de sair? (S/N): ");
+
+                string resposta = Console.ReadLine();
+                if (resposta?.ToUpper() == "S")
+                {
+                    SalvarDados();
+                }
+                else
+                {
+                    Console.WriteLine("Alterações descartadas.");
+                }
+            }
+
+            Console.WriteLine("Saindo do sistema...");
         }
     }
 }

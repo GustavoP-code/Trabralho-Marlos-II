@@ -1,3 +1,5 @@
 ﻿id;nome;categoria;estoqueMinimo;saldo
 1;Notebook;Eletrônicos;5;4
-3;Cadeira;Móveis;2;3
+3;Cadeira;Móveis;2;53
+4;borracha;material;300;900
+5;madeira;materia;1;1

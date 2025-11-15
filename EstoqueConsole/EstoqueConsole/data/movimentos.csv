@@ -1,1 +1,3 @@
-id;produtoId;tipo;quantidade;data;observacao
+﻿id;produtoId;tipo;quantidade;data;observacao
+1;3;Móveis;10;2025-11-15 14:31:11;SAIDA
+2;3;Móveis;10;2025-11-15 14:32:10;ENTRADA
